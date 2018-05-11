@@ -71,8 +71,8 @@ workflows:
       - build_maven_base
       - tag_images:
         requires:
-            - build_java_base
-            - build_maven_base 
+          - build_java_base
+          - build_maven_base 
           filters:
             branches:
               only:
