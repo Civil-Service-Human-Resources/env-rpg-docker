@@ -1,0 +1,80 @@
+version: 2
+jobs:
+
+  build_java_base:
+
+    machine: true
+    steps:
+      - checkout
+
+      - run:
+          name: Login to Azure container repo
+          command: docker login -u ${ACR_ID} -p ${ACR_PASS} ${AZURE_URL}
+      
+      - run:
+          name: build the java image
+          command: ./bin/build.sh java-8-base ${CIRCLE_WORKFLOW_ID}
+
+      - run:
+          name: Push the images to Acr
+          command: docker push ${AZURE_URL}/java-8-base:${CIRCLE_WORKFLOW_ID}
+
+
+  build_maven_base:
+
+    machine: true
+    steps:
+      - checkout
+
+           - run:
+          name: Login to Azure container repo
+          command: docker login -u ${ACR_ID} -p ${ACR_PASS} ${AZURE_URL}
+      
+      - run:
+          name: build the java image
+          command: ./bin/build.sh maven-3-base ${CIRCLE_WORKFLOW_ID}
+
+      - run:
+          name: Push the images to Acr
+          command: docker push ${AZURE_URL}/maven-3-base:${CIRCLE_WORKFLOW_ID}
+
+
+  tag_images:
+    
+    machine: true
+    steps:
+    
+      - checkout
+      - run:
+          name: tag base images and push
+          command: |
+            set -x
+            if [ "$CIRCLE_BRANCH" == "master" ]; then
+              docker_tag="latest"
+            else
+              docker_tag="$CIRCLE_BRANCH"
+            fi
+            echo "Docker tag - ${docker_tag}"
+
+            docker tag ${AZURE_URL}/java-8-base:${CIRCLE_WORKFLOW_ID} ${AZURE_URL}/java-8-base:${docker_tag}
+            docker push ${AZURE_URL}/java-8-base:${docker_tag}
+
+            docker tag ${AZURE_URL}/maven-3-base:${CIRCLE_WORKFLOW_ID} ${AZURE_URL}/maven-3-base:${docker_tag}
+            docker push ${AZURE_URL}/maven-3-base:${docker_tag}
+            
+
+workflows:
+  version: 2
+  build_images:
+    jobs:
+      - build_java_base
+      - build_maven_base
+      - tag_images:
+        requires:
+            - build_java_base
+            - build_maven_base 
+          filters:
+            branches:
+              only:
+                - master
+                - develop
