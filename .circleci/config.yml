@@ -45,6 +45,18 @@ jobs:
     steps:
     
       - checkout
+
+      - run:
+          name: Login to Azure container repo
+          command: docker login -u ${ACR_ID} -p ${ACR_PASS} ${AZURE_URL}
+
+      - run:
+          name: pull the previously built images
+          command: |
+            docker pull ${AZURE_URL}/java-8-base:${CIRCLE_WORKFLOW_ID}
+            docker pull ${AZURE_URL}/maven-3-base:${CIRCLE_WORKFLOW_ID}
+
+
       - run:
           name: tag base images and push
           command: |
@@ -88,7 +100,7 @@ workflows:
           requires:
             - build_java_base
             - build_maven_base   
-            
+
     triggers:
       - schedule:
           cron: "0 1 * * 1-5"
