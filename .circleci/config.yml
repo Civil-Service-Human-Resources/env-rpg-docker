@@ -78,3 +78,23 @@ workflows:
               only:
                 - master
                 - develop
+  
+  # Build the images and push nightly at 1am Mon - Fri
+  build_nightly:
+    jobs:
+      - build_java_base
+      - build_maven_base
+      - tag_images:
+          requires:
+            - build_java_base
+            - build_maven_base   
+            
+    triggers:
+      - schedule:
+          cron: "0 1 * * 1-5"
+          filters:
+            branches:
+              only:
+                - master
+    
+    
