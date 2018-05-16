@@ -1,0 +1,20 @@
+filebeat.prospectors:
+- type: log
+  enabled: true
+  paths:
+    - /logs/*.log
+    - /app/*.log
+    - /logs/*/*.log
+  fields_under_root: true
+  fields:
+    platform: ${FILEBEAT_PLATFORM}
+    environment: ${FILEBEAT_ENV}
+    component: ${FILEBEAT_COMPONENT}
+  encoding: utf-8
+  exclude_files: [".gz"]
+  ignore_older: 3h
+
+output.logstash:
+    hosts: [ $FILEBEAT_HOSTS ]
+    loadbalance: true
+    ssl.enabled: true
