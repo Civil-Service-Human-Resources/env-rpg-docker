@@ -54,7 +54,7 @@ jobs:
 
       - run:
           name: Push the images to Acr
-          command: docker push ${AZURE_URL}/java-8-filebeat:${CIRCLE_WORKFLOW_ID}
+          command: docker push ${AZURE_URL}/java-8-base-filebeat:${CIRCLE_WORKFLOW_ID}
 
 
   tag_images:
