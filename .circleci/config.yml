@@ -38,6 +38,24 @@ jobs:
           name: Push the images to Acr
           command: docker push ${AZURE_URL}/maven-3-base:${CIRCLE_WORKFLOW_ID}
 
+  build_java_filebeat:
+
+    machine: true
+    steps:
+      - checkout
+
+      - run:
+          name: Login to Azure container repo
+          command: docker login -u ${ACR_ID} -p ${ACR_PASS} ${AZURE_URL}
+      
+      - run:
+          name: build the java image
+          command: ./bin/build.sh java-8-base-filebeat ${CIRCLE_WORKFLOW_ID}
+
+      - run:
+          name: Push the images to Acr
+          command: docker push ${AZURE_URL}/java-8-base-filebeat:${CIRCLE_WORKFLOW_ID}
+
 
   tag_images:
     
@@ -55,6 +73,7 @@ jobs:
           command: |
             docker pull ${AZURE_URL}/java-8-base:${CIRCLE_WORKFLOW_ID}
             docker pull ${AZURE_URL}/maven-3-base:${CIRCLE_WORKFLOW_ID}
+            docker pull ${AZURE_URL}/java-8-base-filebeat:${CIRCLE_WORKFLOW_ID}
 
 
       - run:
@@ -74,6 +93,9 @@ jobs:
             docker tag ${AZURE_URL}/maven-3-base:${CIRCLE_WORKFLOW_ID} ${AZURE_URL}/maven-3-base:${docker_tag}
             docker push ${AZURE_URL}/maven-3-base:${docker_tag}
             
+            docker tag ${AZURE_URL}/java-8-base-filebeat:${CIRCLE_WORKFLOW_ID} ${AZURE_URL}/java-8-base-filebeat:${docker_tag}
+            docker push ${AZURE_URL}/java-8-base-filebeat:${docker_tag}
+
 
 workflows:
   version: 2
@@ -81,10 +103,12 @@ workflows:
     jobs:
       - build_java_base
       - build_maven_base
+      - build_java_filebeat
       - tag_images:
           requires:
             - build_java_base
-            - build_maven_base 
+            - build_maven_base
+            - build_java_filebeat 
           filters:
             branches:
               only:
@@ -96,10 +120,12 @@ workflows:
     jobs:
       - build_java_base
       - build_maven_base
+      - build_java_filebeat
       - tag_images:
           requires:
             - build_java_base
-            - build_maven_base   
+            - build_maven_base
+            - build_java_filebeat   
 
     triggers:
       - schedule:
