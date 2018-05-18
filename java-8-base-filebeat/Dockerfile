@@ -31,6 +31,7 @@ RUN     apt-get update && \
 		apt-get install filebeat -y
 
 COPY 	./filebeat.yml /etc/filebeat/filebeat.yml
+RUN		chmod 644 /etc/filebeat/filebeat.yml
 
 # Allow app user to run sudo filebeat
 RUN 	apt-get install sudo -y && \
