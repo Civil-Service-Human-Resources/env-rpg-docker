@@ -8,13 +8,13 @@ filebeat.prospectors:
   fields_under_root: true
   fields:
     platform: ${FILEBEAT_PLATFORM}
-    environment: ${FILEBEAT_ENV}
+    environment: ${FILEBEAT_ENVIRONMENT}
     component: ${FILEBEAT_COMPONENT}
   encoding: utf-8
   exclude_files: [".gz"]
   ignore_older: 3h
 
 output.logstash:
-    hosts: [ $FILEBEAT_HOSTS ]
+    hosts: ${FILEBEAT_HOSTS}
     loadbalance: true
     ssl.enabled: true

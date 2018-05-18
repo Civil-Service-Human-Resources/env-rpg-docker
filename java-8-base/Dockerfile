@@ -17,8 +17,6 @@ LABEL 	uk.cshr-gov.build.build-date=$arg_build_date \
 RUN     apt-get update && \
         apt-get upgrade -y
 
-RUN     rm /usr/bin/perl*
-
 # User under which the application can run
 RUN     useradd -s /sbin/nologin appuser
 

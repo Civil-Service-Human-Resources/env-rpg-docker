@@ -1,0 +1,13 @@
+[Unit]
+Description=Filebeat
+Documentation=https://www.elastic.co/guide
+After=network.target
+
+[Service]
+Type=simple
+Restart=always
+WorkingDirectory=/var/lib/filebeat
+ExecStart=/usr/bin/filebeat -c /etc/filebeat/filebeat.yml
+
+[Install]
+WantedBy=multi-user.target

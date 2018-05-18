@@ -1,5 +1,5 @@
 # From the rpg java base image
-FROM    openjdk:8-jre-slim
+FROM    cshrrpg.azurecr.io/java-8-base
 
 # Add build labels to identify where image came from
 ARG		arg_build_date
@@ -11,7 +11,6 @@ LABEL 	uk.cshr-gov.build.build-date=$arg_build_date \
 		uk.cshr-gov.build.built-project=$arg_build_project \
 		uk.cshr-gov.build.built-by=$arg_built_by 
 
-
 USER 	root
 
 # Install dependencies for filebeat
@@ -22,6 +21,7 @@ RUN 	apt-get update && \
 		apt-get install gnupg2 -y && \
 		apt-get install apt-transport-https -y
 
+
 RUN		wget -qO - https://artifacts.elastic.co/GPG-KEY-elasticsearch | apt-key add -
 
 RUN 	echo "deb https://artifacts.elastic.co/packages/6.x/apt stable main" | tee -a /etc/apt/sources.list.d/elastic-6.x.list
@@ -30,4 +30,9 @@ RUN 	echo "deb https://artifacts.elastic.co/packages/6.x/apt stable main" | tee 
 RUN     apt-get update && \
 		apt-get install filebeat -y
 
+COPY 	./filebeat.yml /etc/filebeat/filebeat.yml
+
 RUN 	update-rc.d filebeat defaults 95 10
+
+# Remove perl as per security requirement
+RUN     rm /usr/bin/perl*
