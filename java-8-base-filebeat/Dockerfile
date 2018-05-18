@@ -37,8 +37,5 @@ RUN 	apt-get install sudo -y && \
 		echo "#Allow appuser to run filebeat" >> /etc/sudoers.d/filebeat && \
 		echo "appuser ALL=(root) NOPASSWD:SETENV: /usr/bin/filebeat -e -c /etc/filebeat/filebeat.yml" >> /etc/sudoers.d/filebeat
 
-
-#RUN 	update-rc.d filebeat defaults 95 10
-
 # Remove perl as per security requirement
 RUN     rm /usr/bin/perl*
