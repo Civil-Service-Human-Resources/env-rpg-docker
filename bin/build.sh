@@ -3,6 +3,16 @@
 # Build images with RPG labels
 # Usage eg ./build.sh java-8-base uid
 
+function usage {
+	echo "Usage: ${BASH_SOURCE[0]} <image> <tag>" 	
+	echo "eg: ${BASH_SOURCE[0]} java-8-base 1234-dbfg-5652-hshgd"
+	exit 0	
+}
+
+if [[ ${#} -lt 2 ]]; then
+	usage
+fi
+
 bin_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 docker_dir="$(dirname ${bin_dir})"
 
