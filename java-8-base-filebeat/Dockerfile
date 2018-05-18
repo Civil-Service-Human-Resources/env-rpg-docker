@@ -32,7 +32,7 @@ RUN     apt-get update && \
 
 COPY 	./filebeat.yml /etc/filebeat/filebeat.yml
 
-RUN 	update-rc.d filebeat defaults 95 10
+#RUN 	update-rc.d filebeat defaults 95 10
 
 # Remove perl as per security requirement
 RUN     rm /usr/bin/perl*
