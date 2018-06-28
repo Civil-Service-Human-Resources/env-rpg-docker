@@ -97,7 +97,6 @@ if [[ "$1" == apache2* ]] || [ "$1" == php-fpm ]; then
 		USER_LOGIN_LIMIT
 		PREVIEW_LINK_DURATION
 		LOCKOUT_TRANS_NAME
-		AUTH_EXTEND_ON
 		AUTH_EXTEND_DURATION
 		AUTH_EXTEND_NONCE_KEY
 		AUTH_EXTEND_TOKEN_KEY
@@ -224,6 +223,10 @@ EOPHP
 
 		if [ "$WORDPRESS_GTM_ON" ]; then
 			set_config 'GTM_ON' 1 boolean
+		fi
+
+		if [ "$WORDPRESS_AUTH_EXTEND_ON" ]; then
+			set_config 'AUTH_EXTEND_ON' 1 boolean
 		fi
 
 		TERM=dumb php -- <<'EOPHP'
