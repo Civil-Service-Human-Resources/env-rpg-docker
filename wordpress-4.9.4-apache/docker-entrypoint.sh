@@ -226,8 +226,15 @@ EOPHP
 		fi
 
 		if [ "$WORDPRESS_AUTH_EXTEND_ON" ]; then
-			set_config 'AUTH_EXTEND_ON' 1 boolean
+		  # convert to lowercase
+		  value=$(echo ${WORDPRESS_AUTH_EXTEND_ON} | tr '[:upper:]' '[:lower:]')
+		  if [ "${value}" == "true" ]; then
+		    set_config 'AUTH_EXTEND_ON' 1 boolean
+		  else
+		    set_config 'AUTH_EXTEND_ON' 0 boolean
+		  fi
 		fi
+
 
 		TERM=dumb php -- <<'EOPHP'
 <?php
