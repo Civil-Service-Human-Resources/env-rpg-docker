@@ -56,6 +56,23 @@ jobs:
           name: Push the images to Acr
           command: docker push ${AZURE_URL}/java-8-base-filebeat:${CIRCLE_WORKFLOW_ID}
 
+  build_wordpress:
+
+    machine: true
+    steps:
+      - checkout
+      - run: 
+          name: Login to Azure container repo
+          command: docker login -u ${ACR_ID} -p ${ACR_PASS} ${AZURE_URL}
+      
+      - run:
+          name: build the wordpress image
+          command: ./bin/build.sh wordpress-4.9.4-apache ${CIRCLE_WORKFLOW_ID}
+      
+      - run:
+          name: Push the images to Acr
+          command: docker push ${AZURE_URL}/wordpress-4.9.4-apache:${CIRCLE_WORKFLOW_ID}
+
 
   tag_images:
     
@@ -74,6 +91,7 @@ jobs:
             docker pull ${AZURE_URL}/java-8-base:${CIRCLE_WORKFLOW_ID}
             docker pull ${AZURE_URL}/maven-3-base:${CIRCLE_WORKFLOW_ID}
             docker pull ${AZURE_URL}/java-8-base-filebeat:${CIRCLE_WORKFLOW_ID}
+            docker pull ${AZURE_URL}/wordpress-4.9.4-apache:${CIRCLE_WORKFLOW_ID}
 
 
       - run:
@@ -96,6 +114,9 @@ jobs:
             docker tag ${AZURE_URL}/java-8-base-filebeat:${CIRCLE_WORKFLOW_ID} ${AZURE_URL}/java-8-base-filebeat:${docker_tag}
             docker push ${AZURE_URL}/java-8-base-filebeat:${docker_tag}
 
+            docker tag ${AZURE_URL}/wordpress-4.9.4-apache:${CIRCLE_WORKFLOW_ID} ${AZURE_URL}/wordpress-4.9.4-apache:${docker_tag}
+            docker push ${AZURE_URL}/wordpress-4.9.4-apache:${docker_tag}
+
 
 workflows:
   version: 2
@@ -104,11 +125,13 @@ workflows:
       - build_java_base
       - build_maven_base
       - build_java_filebeat
+      - build_wordpress
       - tag_images:
           requires:
             - build_java_base
             - build_maven_base
             - build_java_filebeat 
+            - build_wordpress
           filters:
             branches:
               only:
@@ -121,11 +144,13 @@ workflows:
       - build_java_base
       - build_maven_base
       - build_java_filebeat
+      - build_wordpress
       - tag_images:
           requires:
             - build_java_base
             - build_maven_base
-            - build_java_filebeat   
+            - build_java_filebeat
+            - build_wordpress
 
     triggers:
       - schedule:
