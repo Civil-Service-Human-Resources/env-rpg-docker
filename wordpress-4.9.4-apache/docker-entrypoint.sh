@@ -225,14 +225,18 @@ EOPHP
 			set_config 'GTM_ON' 1 boolean
 		fi
 
-		if [ "$WORDPRESS_AUTH_EXTEND_ON" ]; then
-		  # convert to lowercase
-		  value=$(echo ${WORDPRESS_AUTH_EXTEND_ON} | tr '[:upper:]' '[:lower:]')
-		  if [ "${value}" == "true" ]; then
-		    set_config 'AUTH_EXTEND_ON' 1 boolean
-		  else
-		    set_config 'AUTH_EXTEND_ON' 0 boolean
-		  fi
+		# This should never happen, as script is set to exit on unset variables
+		if [ -z "$WORDPRESS_AUTH_EXTEND_ON" ]; then
+				echo "WORDPRESS_AUTH_EXTEND_ON not set - defaulting to false"
+    			set_config 'AUTH_EXTEND_ON' 0 boolean
+		else
+  				# convert to lowercase
+  				value=$(echo ${WORDPRESS_AUTH_EXTEND_ON} | tr '[:upper:]' '[:lower:]')
+  				if [ "${value}" == "true" ]; then
+    				set_config 'AUTH_EXTEND_ON' 1 boolean
+  				else
+					set_config 'AUTH_EXTEND_ON' 0 boolean
+  				fi
 		fi
 
 

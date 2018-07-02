@@ -89,7 +89,15 @@ You can add a variable to the docker-entrypoint.sh as follows:
 
 ## Location
 Currently pushed to Azure Container Reg.
-`cshrrpg.azurecr.io/wordpress:4.9.4-apache`
+`cshrrpg.azurecr.io/wordpress-4.9.4-apache`
+
+## docker-compose.yml
+
+Docker compose can be used to run the Wordpress deployment locally, and test addition of variables to the docker-entrypoint.sh file.
+
+Add the relevant new variable under `ENVIRONMENT` then run compose using 
+
+`docker-compose up`
 
 ## TODO
 

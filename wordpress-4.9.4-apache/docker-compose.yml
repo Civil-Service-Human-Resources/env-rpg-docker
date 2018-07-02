@@ -1,0 +1,19 @@
+version: "2"
+
+services:
+  wordpress:
+    image: cshrrpg.azurecr.io/wordpress-4.9.4-apache:local_test
+    restart: always
+    ports:
+      - 8080:80
+    environment:
+      WORDPRESS_DB_PASSWORD: example
+      WORDPRESS_AUTH_EXTEND_ON: "true"
+    volumes:
+      - ./volume:/var/www/html
+
+  mysql:
+    image: mysql:5.7
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: example
