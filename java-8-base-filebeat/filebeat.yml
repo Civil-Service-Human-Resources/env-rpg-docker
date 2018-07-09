@@ -13,6 +13,10 @@ filebeat.prospectors:
   encoding: utf-8
   exclude_files: [".gz"]
   ignore_older: 3h
+  # Catches java exceptions by insisting all new lines start with a date
+  multiline.pattern: '^[0-9]{4}-[0-9]{2}-[0-9]{2}'
+  multiline.negate: true
+  multiline.match: after
 
 output.logstash:
     hosts: ${FILEBEAT_HOSTS}
