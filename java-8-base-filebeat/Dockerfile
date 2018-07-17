@@ -28,7 +28,7 @@ RUN 	echo "deb https://artifacts.elastic.co/packages/6.x/apt stable main" | tee 
 
 # Update all dependencies and install filebeat
 RUN     apt-get update && \
-		apt-get install filebeat -y
+		apt-get install filebeat=6.2.4 -y
 
 COPY 	./filebeat.yml /etc/filebeat/filebeat.yml
 RUN		chmod 644 /etc/filebeat/filebeat.yml
