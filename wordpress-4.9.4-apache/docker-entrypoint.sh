@@ -109,6 +109,7 @@ if [[ "$1" == apache2* ]] || [ "$1" == php-fpm ]; then
 		MEDIA_SCAN_AUTH_B
 		MEDIA_SCAN_CONNECT_TIMEOUT
 		MEDIA_SCAN_TIMEOUT
+		MEDIA_SCAN_ON
 	)
 	envs=(
 		WORDPRESS_DB_HOST
@@ -234,10 +235,10 @@ EOPHP
 			set_config 'GTM_ON' 1 boolean
 		fi
 
-		if [ "$WORDPRESS_MEDIA_SCAN_ON" ]; then
-			set_config  'MEDIA_SCAN_ON' 1 boolean
-		fi
-		
+		# if [ "$WORDPRESS_MEDIA_SCAN_ON" ]; then
+		# 	set_config  'MEDIA_SCAN_ON' 1 boolean
+		# fi
+
 
 		# This should never happen, as script is set to exit on unset variables
 		if [ -z "$WORDPRESS_AUTH_EXTEND_ON" ]; then
