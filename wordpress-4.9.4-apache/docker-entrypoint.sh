@@ -197,7 +197,7 @@ EOPHP
 		set_config 'DB_HOST' "$WORDPRESS_DB_HOST"
 		set_config 'DB_USER' "$WORDPRESS_DB_USER"
 		set_config 'DB_PASSWORD' "$WORDPRESS_DB_PASSWORD"
-		set_config 'DB_NAME' "$WORDPRESS_DB_NAME"0
+		set_config 'DB_NAME' "$WORDPRESS_DB_NAME"
 
 
 
