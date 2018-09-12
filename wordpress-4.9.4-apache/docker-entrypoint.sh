@@ -110,7 +110,7 @@ if [[ "$1" == apache2* ]] || [ "$1" == php-fpm ]; then
 		MEDIA_SCAN_TIMEOUT
 		CACHE_CONTROL_SECONDS
 		CACHE_CONTROL_MINUTES
-		MEDIA_SCAN_SEND
+		#MEDIA_SCAN_SEND
 
 	)
 	envs=(
